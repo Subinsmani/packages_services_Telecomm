@@ -235,7 +235,8 @@ public class InCallController extends CallsManagerListenerBase {
             Log.i(this, "Attempting to bind to InCall %s, with %s", mInCallServiceInfo, intent);
             mIsConnected = true;
             if (!mContext.bindServiceAsUser(intent, mServiceConnection,
-                        Context.BIND_AUTO_CREATE | Context.BIND_FOREGROUND_SERVICE,
+                        Context.BIND_AUTO_CREATE | Context.BIND_FOREGROUND_SERVICE |
+                        Context.BIND_ABOVE_CLIENT,
                         UserHandle.CURRENT)) {
                 Log.w(this, "Failed to connect.");
                 mIsConnected = false;
@@ -909,7 +910,7 @@ public class InCallController extends CallsManagerListenerBase {
         boolean vibrateOnConnect = Settings.System.getIntForUser(mContext.getContentResolver(),
             Settings.System.VIBRATE_ON_CONNECT, 0, UserHandle.USER_CURRENT) == 1;
         boolean vibrateOnDisconnect = Settings.System.getIntForUser(mContext.getContentResolver(),
-            Settings.System.VIBRATE_ON_DISCONNECT, 0, UserHandle.USER_CURRENT) == 1; 
+            Settings.System.VIBRATE_ON_DISCONNECT, 0, UserHandle.USER_CURRENT) == 1;
 
         if (oldState == CallState.DIALING && newState == CallState.ACTIVE && vibrateOnConnect) {
             vibrate(100, 200, 0);
